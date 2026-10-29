@@ -60,6 +60,10 @@ theme_jpa <- function() {
 if(!file.exists("EQA_with_LabInfo_integrated.csv")) stop("Data file not found!")
 df <- read_csv("EQA_with_LabInfo_integrated.csv", show_col_types = FALSE)
 df$Abs_Bias <- abs(df$Bias)
+# Fix (2026-10-29): Lab_type is blank for two laboratory-years (101087 in 2018; 112013-9 in 2020); both labs are
+# "Hospital/Institute" in every other year. read_csv() turns the blank into NA, which made Lab_Type_Factor NA and
+# silently dropped these 10 records from the LMM (N = 3,180 instead of 3,190). Carry the lab's own type forward/back.
+df <- df %>% group_by(Lab_ID) %>% tidyr::fill(Lab_type, .direction = "downup") %>% ungroup()
 
 # Cleaning Functions
 classify_qc <- function(val) {
@@ -68,8 +72,13 @@ classify_qc <- function(val) {
   return("No")
 }
 classify_bal <- function(val) {
-  if (is.na(val)) return("Normal") 
-  if (val == "1" || str_detect(tolower(val), "10^-5|10^-6|micro|0.01mg|class i")) return("High")
+  # High = questionnaire option 1 or 2, or an explicitly stated readability of 10^-5 / 10^-6 g
+  # (0.01 mg / 0.001 mg / 1 ug). Option 2 = 10^-5 g (confirmed 2026-10-29; Round 5c).
+  # Fix history: (5b) "^" in "10^-5|..." was unescaped and never matched; (5c) code "2" added as High.
+  if (is.na(val) || trimws(val) == "") return("Normal")
+  v <- trimws(val)
+  if (v %in% c("1", "2") || str_detect(v, "^1\\s*[,(]") || str_detect(v, "^2\\s*[\uFF1B;,]") ||
+      str_detect(tolower(v), "10\\^-5|10\\^-6|micro|0\\.01 ?mg|0\\.001 ?mg|1 \u00b5g|class i")) return("High")
   return("Normal")
 }
 
@@ -426,7 +435,7 @@ if(!"QA_Clean" %in% names(df)) {
     QA_Clean = ifelse(str_to_title(QA) == "Yes", "Yes", "No"),
     SIL_Clean = ifelse(str_to_title(`SIL-IS`) == "Yes", "Yes", "No"),
     QC_Clean = ifelse(str_detect(Separate_Weighing_QC_Sample, "Yes"), "Yes", "No"),
-    Balance_Clean = ifelse(str_detect(Balance_Precision, "10^-5"), "High", "Normal")
+    Balance_Clean = sapply(Balance_Precision, classify_bal)  # fixed: was unescaped "10^-5"
   )
 }
 
