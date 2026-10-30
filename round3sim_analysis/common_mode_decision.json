@@ -1,0 +1,49 @@
+{
+  "bias_definition": "signed New_Bias% = (Conc - Median_Conc)/Median_Conc*100 (robust-median assigned value)",
+  "model": "b_il = alpha_i + delta_il; Var(alpha); mean Var(delta); share=Var(alpha)/(Var(alpha)+mean Var(delta))",
+  "bootstrap": "lab resample within year, B=2000, seed=20261030",
+  "n_labs_k3": 106,
+  "n_labs_span_2014_2020": 31,
+  "all_complete": {
+    "var_alpha_2014": 124.86688567622569,
+    "var_alpha_2020": 146.6095247596007,
+    "share_2014": 0.8204102915669682,
+    "share_2020": 0.19165939381228708,
+    "slope_share_ex2017": -0.0831620339498293,
+    "slope_share_all": -0.08316203394983863,
+    "slope_log1p_var_alpha_ex2017": -0.045433476327216574,
+    "median_var_alpha_early_2014_16": 124.86688567622569,
+    "median_var_alpha_late_2018_20": 82.54016646355446,
+    "absolute_var_alpha_decline": false,
+    "relative_share_decline": true
+  },
+  "continuous_ge3yrs": {
+    "var_alpha_2014": 129.96771865454545,
+    "var_alpha_2020": 202.8559931619048,
+    "share_2014": 0.8225623205219994,
+    "share_2020": 0.1766569572526902,
+    "slope_share_ex2017": -0.08815479470622171,
+    "slope_share_all": -0.08815479470623198,
+    "slope_log1p_var_alpha_ex2017": 0.0006358089086121997,
+    "median_var_alpha_early_2014_16": 129.96771865454545,
+    "median_var_alpha_late_2018_20": 84.20772653373737,
+    "absolute_var_alpha_decline": false,
+    "relative_share_decline": true
+  },
+  "present_2014_and_2020": {
+    "var_alpha_2014": 159.0979303827957,
+    "var_alpha_2020": 59.806791612903226,
+    "share_2014": 0.8453951084204827,
+    "share_2020": 0.8333381569883926,
+    "slope_share_ex2017": -0.004832384990174739,
+    "slope_share_all": -0.004832384990160153,
+    "slope_log1p_var_alpha_ex2017": -0.22632493281565555,
+    "median_var_alpha_early_2014_16": 159.0979303827957,
+    "median_var_alpha_late_2018_20": 37.651282616091954,
+    "absolute_var_alpha_decline": true,
+    "relative_share_decline": true
+  },
+  "absolute_var_alpha_trend_robust": false,
+  "relative_share_trend_robust": true,
+  "center_claim": "relative_common_mode_share_decline_supported; absolute_Var_alpha_decline_NOT_supported"
+}

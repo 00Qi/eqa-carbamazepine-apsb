@@ -1,0 +1,38 @@
+{
+  "n_labs": 131,
+  "n_events": 23,
+  "logistic_C": 0.005,
+  "risk_enrichment_vs_random_Capture20": true,
+  "failrate_Capture@20%": 0.34782608695652173,
+  "failrate_AUC": 0.6402979066022543,
+  "failrate_AUC_CI": [
+    0.5285589558162096,
+    0.749433962264151
+  ],
+  "failrate_Capture@20%_CI": [
+    0.17851890756302521,
+    0.5263157894736842
+  ],
+  "complex_beats_simple_on_Capture20": false,
+  "complex_beats_simple_on_AUC": true,
+  "recommended_primary_scorer": "Historical failure-rate (simple rule); blended offers little Capture gain",
+  "cold_start": {
+    "n_cold": 17,
+    "n_cold_events": 3,
+    "n_warm": 114,
+    "n_warm_events": 20,
+    "cold_start_rule": "heuristic scores = 0 (ranked last among all 131); logistic uses median-filled history + 2020 practice flags",
+    "cold_labs_in_top20_failrate": 0,
+    "cold_events_in_top20_failrate": 0
+  },
+  "leakage": {
+    "train_years": "2014-2019",
+    "test_year": 2020,
+    "historical_PT_features": "computed only from Year < prediction year (cum_fail_rate, hist_max_abs, slopes, etc.)",
+    "practice_flags_in_FEATURE_COLS": "QA/SIL/CNAS/MV/bal_num/is_CRO taken from CURRENT lab-year row in build_feature_rows \u2014 for 2020 holdout these are 2020 questionnaire values (disclosed residual contemporaneous limitation for practice flags; historical PT summaries are leakage-safe)",
+    "n_rec_year": "included in FEATURE_COLS (same-year record count) \u2014 potential weak leakage for logistic; heuristics (fail/max) do NOT use it",
+    "cold_start_scoring": "labs with has_history==0 get heuristic scores filled to 0 (ranked last); logistic still scores them via current-year practice flags + zeroed history after median fill",
+    "event_definition": "abs(New_Bias%)>15 any record in lab-year; not ISR",
+    "no_2020_outcome_in_features": true
+  }
+}
