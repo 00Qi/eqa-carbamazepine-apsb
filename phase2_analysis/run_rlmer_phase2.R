@@ -24,7 +24,14 @@ classify_bal <- function(val) {
   "Normal"
 }
 
-df0 <- read.csv("/workspace/p2/analysis/EQA_with_LabInfo_integrated.csv",
+csv_cands <- c(
+  file.path(dirname(dirname(normalizePath("."))), "data", "EQA_with_LabInfo_integrated.csv"),
+  "/workspace/apsb_out/APSB_submission_1008/data/EQA_with_LabInfo_integrated.csv",
+  "/workspace/p2/analysis/EQA_with_LabInfo_integrated.csv"
+)
+csv_path <- csv_cands[file.exists(csv_cands)][1]
+if (is.na(csv_path)) stop("EQA_with_LabInfo_integrated.csv not found")
+df0 <- read.csv(csv_path,
                 check.names=FALSE, stringsAsFactors=FALSE)
 df <- df0
 df$Abs_Bias <- abs(df$Bias)

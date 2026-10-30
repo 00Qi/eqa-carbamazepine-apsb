@@ -18,9 +18,26 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-RAW = Path("/workspace/p2/analysis/EQA_with_LabInfo_integrated.csv")
-OUT = Path("/workspace/p2/out/round3sim")
 PKG = Path("/workspace/apsb_out/APSB_submission_1008")
+def _resolve_raw():
+    import os
+    from pathlib import Path as _P
+    cands = []
+    if os.environ.get("APSB_DATA"):
+        cands.append(_P(os.environ["APSB_DATA"]))
+    here = _P(__file__).resolve().parent if "__file__" in globals() else _P.cwd()
+    cands += [PKG / "data" / "EQA_with_LabInfo_integrated.csv",
+              here.parent / "data" / "EQA_with_LabInfo_integrated.csv",
+              here.parent.parent / "data" / "EQA_with_LabInfo_integrated.csv",
+              here / "EQA_with_LabInfo_integrated.csv",
+              _P("/workspace/p2/analysis/EQA_with_LabInfo_integrated.csv"),
+              _P("/workspace/eqa_revise/pca_check/EQA_with_LabInfo_integrated.csv")]
+    for p in cands:
+        if p.exists():
+            return p
+    raise FileNotFoundError("EQA_with_LabInfo_integrated.csv not found; set APSB_DATA")
+RAW = _resolve_raw()
+OUT = Path("/workspace/p2/out/round3sim")
 OUT.mkdir(parents=True, exist_ok=True)
 (PKG / "round3sim_analysis").mkdir(parents=True, exist_ok=True)
 (PKG / "supplementary").mkdir(parents=True, exist_ok=True)

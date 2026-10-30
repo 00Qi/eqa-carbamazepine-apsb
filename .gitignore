@@ -7,3 +7,4 @@ __pycache__/
 .DS_Store
 output/
 Figure_*/
+data/EQA_with_LabInfo_integrated.csv
