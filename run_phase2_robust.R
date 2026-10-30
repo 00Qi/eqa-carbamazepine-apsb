@@ -295,3 +295,9 @@ sig_cap <- r_c100$QA_Level1_p < 0.05
 dir_ok <- beta < 0 && r_c100$QA_Level1_est < 0
 cat("KEEP_QA_THREAD?", sig_log && dir_ok, " (log1p sig + boot CI<0 + direction; cap100 sig=", sig_cap, ")\n")
 cat("DONE\n")
+
+# ---- rlmer robust LMM (see run_rlmer_phase2.R; requires robustlmm) ----
+# Level-1 QA (rlmer Abs_Bias): -1.329 (SE 0.755; ~95% CI -2.808 to 0.150)
+# Level-1 QA (rlmer log1p):    -0.165 (SE 0.130; ~95% CI -0.421 to 0.090)
+# Level-1 QA (rlmer capped@100): -1.329 (SE 0.755; ~95% CI -2.808 to 0.150)
+# All three converged; asymptotic Wald CIs include 0 (robust down-weighting of extremes).
